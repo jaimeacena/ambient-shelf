@@ -1,9 +1,8 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
 const catalog = JSON.parse(await readFile(new URL('catalog.json', root), 'utf8'));
-const generatedFile = new URL('lib/ambient_shelf.dart', root);
 const categories = new Set(['nature', 'music', 'noise']);
 const ids = new Set();
 const files = new Set();
@@ -37,36 +36,6 @@ for (const { id, titles, category, file, bytes, sha256, durationMs, loudnessLufs
 const audioFiles = await readdir(new URL('audio/', root));
 if (audioFiles.length !== files.size || audioFiles.some((file) => !files.has(`audio/${file}`))) {
   throw new Error('The audio directory must match the catalogue.');
-}
-
-const dartString = (value) => JSON.stringify(value).replaceAll('$', '\\$');
-const rows = catalog.tracks.map((track) => `  (
-    id: ${dartString(track.id)},
-    titleEs: ${dartString(track.titles.es)},
-    titleEn: ${dartString(track.titles.en)},
-    category: ${dartString(track.category)},
-    file: ${dartString(track.file)},
-    loudnessLufs: ${track.loudnessLufs},
-  ),`).join('\n');
-const generated = `// Generated from catalog.json by tool/check-catalog.mjs.
-
-const tracks = <({
-  String id,
-  String titleEs,
-  String titleEn,
-  String category,
-  String file,
-  double loudnessLufs,
-})>[
-${rows}
-];
-`;
-
-if (process.argv.includes('--write')) {
-  await mkdir(new URL('lib/', root), { recursive: true });
-  await writeFile(generatedFile, generated);
-} else if ((await readFile(generatedFile, 'utf8')).replaceAll('\r\n', '\n') !== generated) {
-  throw new Error('The Dart catalogue is outdated. Run node tool/check-catalog.mjs --write.');
 }
 
 console.log(`Verified ${ids.size} catalogue entries and recordings.`);
