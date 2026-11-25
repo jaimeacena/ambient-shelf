@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "tracks": [
+    {
+      "id": "country-night-crickets",
+      "titles": {"es": "Noche de campo", "en": "Country night"},
+      "category": "nature",
+      "file": "audio/country-night-crickets.mp3",
+      "bytes": 8026368,
+      "sha256": "07ce4b6a98b32a23154735ebc7db91cc8e1f485f31b77a66b021ca7e5e5a723f",
+      "durationMs": 300573,
+      "loudnessLufs": -17.1,
+      "license": {"id": "CC0-1.0", "url": "https://creativecommons.org/publicdomain/zero/1.0/"},
+      "source": {
+        "title": "COUNTRY_NIGHT_CRICKETS.wav",
+        "author": "keng-wai-chane-chick-te",
+        "url": "https://freesound.org/people/keng-wai-chane-chick-te/sounds/431519/",
+        "changes": "Original WAV converted to MP3. The supplied MP3 is published unchanged."
+      }
+    }
+  ]
+}
